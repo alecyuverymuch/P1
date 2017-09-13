@@ -110,7 +110,7 @@ public class P1 {
 		}
 		
 		//Test: Adding a Valid Entry
-		//Pass: The value is added and the output matches
+		//Pass: The value is added and found by search
 		String test3 = "Adding a Valid Entry";
 		try {
 			tbl.addDecl("test3", new Sym("test3"));
@@ -128,7 +128,89 @@ public class P1 {
 		} catch (Exception e) {
 			System.out.println("Fail: " + testName + test3);
 		}
-		
+
+		// Test: Add Duplicate Entries
+		// Pass: DuplicateSymException is thrown
+		String test4 = "Add Duplicate Entries";
+		try { 
+			tbl.addScope();
+			tbl.addDecl("test4", new Sym("test4"));
+			tbl.addDecl("test4", new Sym("test4"));
+			System.out.println("Fail: " + testname + test4);
+		} catch (DuplicateSymException e) {
+			System.out.println("Pass: " + testname + test4);
+		} catch (Exception e) {
+			System.out.println("Fail: " + testname + test4);
+		}
+
+		// Test: Adding Multiple Entries
+		// Pass: The values are added and found by search
+		String test5 = "Adding Multiple Entries";
+		try {
+			tbl.addScope();
+			tbl.addDecl("test5_1", new Sym("test5_1"));
+			tbl.addDecl("test5_2", new Sym("test5_2"));
+			String localSearch1 = tbl.lookupLocal("test5_1").getType(); 
+			String globalSearch1 = tbl.lookupGlobal("test5_1").getType();
+			Sym localSearchFail1 = tbl.lookupLocal("test5_1Fail"); 
+			Sym globalSearchFail1 = tbl.lookupGlobal("test5_1Fail");
+
+			String localSearch2 = tbl.lookupLocal("test5_2").getType(); 
+			String globalSearch2 = tbl.lookupGlobal("test5_2").getType();
+			Sym localSearchFail2 = tbl.lookupLocal("test5_2Fail"); 
+			Sym globalSearchFail2 = tbl.lookupGlobal("test5_2Fail");
+
+			if (localSearch1 != "test5_1" || 
+				globalSearch1 != "test5_1" || 
+				localSearchFail1 != null || 
+				globalSearchFail1 != null)
+				throw new Exception();
+
+			if (localSearch2 != "test5_2" || 
+				globalSearch2 != "test5_2" || 
+				localSearchFail2 != null || 
+				globalSearchFail2 != null)
+				throw new Exception();
+
+			System.out.println("Pass: " + testname + test5);
+		} catch (Exception e) {
+			System.out.println("Fail: " + testname + test5);
+		}
+
+		// Test: Adding Multiple Values and Scopes
+		// Pass: All values are added and found by search
+		String test6 = "Adding Multiple Values and Scopes";
+		try {
+			tbl.addScope();
+			tbl.addDecl("test6_1", new Sym("test6_1"));
+			tbl.addScope();
+			tbl.addDecl("text6_2", new Sym("test6_2"));
+			String localSearch1 = tbl.lookupLocal("test6_1").getType(); 
+			String globalSearch1 = tbl.lookupGlobal("test6_1").getType();
+			Sym localSearchFail1 = tbl.lookupLocal("test6_1Fail"); 
+			Sym globalSearchFail1 = tbl.lookupGlobal("test6_1Fail");
+
+			String localSearch2 = tbl.lookupLocal("test6_2").getType(); 
+			String globalSearch2 = tbl.lookupGlobal("test6_2").getType();
+			Sym localSearchFail2 = tbl.lookupLocal("test6_2Fail"); 
+			Sym globalSearchFail2 = tbl.lookupGlobal("test6_2Fail");
+
+			if (localSearch1 != null || 
+				globalSearch1 != "test5_1" || 
+				localSearchFail1 != null || 
+				globalSearchFail1 != null)
+				throw new Exception();
+
+			if (localSearch2 != "test5_2" || 
+				globalSearch2 != "test5_2" || 
+				localSearchFail2 != null || 
+				globalSearchFail2 != null)
+				throw new Exception();
+
+			System.out.println("Pass: " + testname + test6);
+		} catch (Exception e) {
+			System.out.println("Fail: " + testname + test6);
+		}
 	}
 
 }
