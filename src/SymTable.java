@@ -71,5 +71,6 @@ public class SymTable {
 	public void print() {
 		System.out.print("\nSym Table\n");
 		symTable.forEach(m -> System.out.println(m.toString()));
+		System.out.println();
 	}
 }
